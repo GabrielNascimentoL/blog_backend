@@ -1,0 +1,29 @@
+services:
+  api:
+    container_name: blog_api
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    command: npm run dev
+
+  db:
+    container_name: blog_db
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: blog_user
+      POSTGRES_PASSWORD: blog_pass
+    volumes:
+      - db_blog:/var/lib/postgresql/data
+
+volumes:
+  db_blog:
